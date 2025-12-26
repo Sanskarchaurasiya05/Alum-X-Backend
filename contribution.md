@@ -8,6 +8,7 @@ Thanks to all the amazing people who have contributed to **AlumX's Backend Repos
 - Aryan Srivastava (@Aryan9059)
 - Gaurav Chhetri (@Muffinboy19)
 - Surya Raghuram (@Surya-Raghuram)
+- Harsh Kumar(@harshkumar18-bzz)
 
 ---
 
