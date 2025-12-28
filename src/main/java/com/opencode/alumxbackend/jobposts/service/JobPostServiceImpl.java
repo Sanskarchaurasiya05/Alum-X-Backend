@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.opencode.alumxbackend.jobposts.model.JobPostLike;
+import com.opencode.alumxbackend.jobposts.repository.JobPostLikeRepository;
 import org.springframework.stereotype.Service;
 
 import com.opencode.alumxbackend.common.exception.Errors.BadRequestException;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JobPostServiceImpl implements JobPostService{
+    private final JobPostLikeRepository jobPostLikeRepository;
     private final JobPostRepository jobPostRepository;
     private final UserRepository userRepository;
 
@@ -36,6 +39,32 @@ public class JobPostServiceImpl implements JobPostService{
 
         List<JobPost> posts = jobPostRepository.findByUsernameOrderByCreatedAtDesc(user.getUsername());
         return JobPostResponse.fromEntities(posts);
+    }
+
+    @Override
+    public void likePost(String postId, Long userId) {
+        // 1. Check if post exists
+        if (!jobPostRepository.existsById(postId)) {
+            throw new ResourceNotFoundException("Post not found with postId: " + postId);
+        }
+        
+        // 2. Check if user exists
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User not found with id: " + userId);
+        }
+        
+        // 3. Check if user already liked the post
+        if (jobPostLikeRepository.existsByPostIdAndUserId(postId, userId)) {
+            throw new BadRequestException("User has already liked this post");
+        }
+        
+        // 4. Create and save the like
+        JobPostLike like = JobPostLike.builder()
+                .postId(postId)
+                .userId(userId)
+                .build();
+        
+        jobPostLikeRepository.save(like);
     }
 
     @Override
