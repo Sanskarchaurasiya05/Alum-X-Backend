@@ -3,9 +3,13 @@ package com.opencode.alumxbackend.jobposts.service;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.opencode.alumxbackend.jobposts.dto.CommentRequest;
+import com.opencode.alumxbackend.jobposts.model.JobPostComment;
+import com.opencode.alumxbackend.jobposts.repository.commentRepository;
 import org.springframework.stereotype.Service;
 
 import com.opencode.alumxbackend.common.exception.Errors.BadRequestException;
@@ -28,14 +32,32 @@ import lombok.RequiredArgsConstructor;
 public class JobPostServiceImpl implements JobPostService{
     private final JobPostRepository jobPostRepository;
     private final UserRepository userRepository;
-
+     private final commentRepository commentRepository;
     @Override
     public List<JobPostResponse> getPostsByUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id: %d", userId)));
 
         List<JobPost> posts = jobPostRepository.findByUsernameOrderByCreatedAtDesc(user.getUsername());
         return JobPostResponse.fromEntities(posts);
+    }
+
+    @Override
+    public void addComment(String postId, Long userId, CommentRequest request) {
+        JobPost post = jobPostRepository.findById(postId)
+                .orElseThrow(()->new ResourceNotFoundException("job post not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        JobPostComment comment = JobPostComment.builder()
+                .jobPost(post)
+                .user(user)
+                .content(request.content())
+                .build();
+
+        commentRepository.save(comment);
+
     }
 
     @Override
@@ -73,6 +95,7 @@ public class JobPostServiceImpl implements JobPostService{
                 .description(request.getDescription())
                 .imageUrls(request.getImageUrls())
                 .createdAt(LocalDateTime.now())
+                .comments(new ArrayList<>())
                 .build();
 
 
