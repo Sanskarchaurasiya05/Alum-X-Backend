@@ -32,7 +32,7 @@ public class JobPostServiceImpl implements JobPostService{
     @Override
     public List<JobPostResponse> getPostsByUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id  not found " + userId));
 
         List<JobPost> posts = jobPostRepository.findByUsernameOrderByCreatedAtDesc(user.getUsername());
         return JobPostResponse.fromEntities(posts);
