@@ -1,0 +1,27 @@
+{
+  "skills": {
+    "Java": "#F89820",
+    "Spring Boot": "#6DB33F",
+    "React": "#61DAFB",
+    "Python": "#3572A5"
+  },
+  "techStack": {
+    "Node.js": "#339933",
+    "MongoDB": "#47A248",
+    "Flutter": "#02569B"
+  },
+  "frameworks": {
+    "Spring": "#6DB33F",
+    "Express": "#000000"
+  },
+  "languages": {
+    "Java": "#F89820",
+    "Python": "#3572A5",
+    "Kotlin": "#A97BFF"
+  },
+  "education": {
+    "Bachelor": "#FFD700",
+    "Master": "#FF8C00",
+    "PhD": "#8A2BE2"
+  }
+}
