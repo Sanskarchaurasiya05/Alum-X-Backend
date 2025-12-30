@@ -1,7 +1,7 @@
-import com.opencode.alumxbackend.basics.LooninS.house
+package com.opencode.alumxbackend.basics.LooninS.house.model;
 
-import lombok.*
-import jakarta.persistence.*
+import lombok.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
@@ -9,7 +9,7 @@ import jakarta.persistence.*
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class User {
+public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
