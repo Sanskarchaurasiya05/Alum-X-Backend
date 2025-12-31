@@ -2,7 +2,7 @@ package com.opencode.alumxbackend.basics.LooninS.house;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.opencode.alumxbackend.basics.your_name.house.service.HelloService;
+import com.opencode.alumxbackend.basics.LooninS.house.service.HelloService;
 
 @RestController
 public class HelloController {
@@ -18,4 +18,3 @@ public class HelloController {
         return helloService.getHelloMessage();
     }
 }
-
