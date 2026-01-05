@@ -4,6 +4,7 @@ package com.opencode.alumxbackend.users.controller;
 import com.opencode.alumxbackend.auth.dto.LoginRequest;
 import com.opencode.alumxbackend.auth.dto.LoginResponse;
 import com.opencode.alumxbackend.users.dto.UserProfileResponse;
+import com.opencode.alumxbackend.users.dto.UserProfileUpdateRequest;
 import com.opencode.alumxbackend.users.model.User;
 import com.opencode.alumxbackend.users.model.UserRole;
 import com.opencode.alumxbackend.users.repository.UserRepository;
@@ -54,6 +55,7 @@ public class UserControllerTest {
                 .username("gaurav63")
                 .email("ife2022004@iiita.ac.in")
                 .name("Gaurav Chhetri")
+                .currentCompany("Gromo")
                 .passwordHash(passwordEncoder.encode("password"))
                 .role(UserRole.STUDENT)
                 .profileCompleted(false)
@@ -91,6 +93,35 @@ public class UserControllerTest {
 
     }
 
+
+    @Test
+    @DisplayName("should update the profile details for a user")
+    void shouldUpdateProfileDetailsOfAUser(){
+
+        UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest();
+        userProfileUpdateRequest.setCurrentCompany("DealShare");
+
+
+        UserProfileResponse userProfileUpdateRequest1 = webClient.patch()
+                .uri("/api/users/"+testUser.getId()+"/profile")
+                .bodyValue(userProfileUpdateRequest)
+                .header("Authorization","Bearer "+authTokenUser1)
+                .retrieve()
+                .bodyToMono(UserProfileResponse.class)
+                .block();
+
+
+        assertThat(userProfileUpdateRequest1).isNotNull();
+        assert userProfileUpdateRequest1 != null;
+        assertThat(userProfileUpdateRequest1.getCurrentCompany()).isEqualTo("DealShare");
+        System.out.println("UserProfileResponse = " + userProfileUpdateRequest1);
+
+
+
+
+
+
+    }
 
 
 
